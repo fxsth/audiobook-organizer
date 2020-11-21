@@ -1,10 +1,11 @@
 import os
 import ffmpeg
 import requests
-import urllib.request
+import sys
 
-dir = '/home/felix/Cornelia Funke/Tintenherz/'
-searchterm = 'cornelia funke - Tintenherz'
+
+dir = sys.argv[0]
+searchterm = sys.argv[1]
 searchterm.replace('-', '')
 searchterm.replace('  ', ' ')
 searchterm.replace(' ', '%20')

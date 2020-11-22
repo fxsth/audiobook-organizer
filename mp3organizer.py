@@ -2,25 +2,31 @@ import os
 import ffmpeg
 import requests
 import sys
+import urllib.request
+import ntpath
 
-
-dir = sys.argv[0]
-searchterm = sys.argv[1]
+dir = sys.argv[1]
+searchterm = ntpath.basename(dir)
+print("Searchterm is: " + searchterm)
+if(len(sys.argv)>2):
+    searchterm = sys.argv[1]
 searchterm.replace('-', '')
+searchterm.replace(':', '')
 searchterm.replace('  ', ' ')
 searchterm.replace(' ', '%20')
 api_url = 'https://itunes.apple.com/search?media=audiobook&term='
 response = requests.get(api_url+searchterm).json()
+print(api_url+searchterm)
 result = response["results"][0]
 print(result)
 collectionName = result["collectionName"]
 artistName = result["artistName"]
-# artworkUrl100 = result["artworkUrl100"]
+artworkUrl = result["artworkUrl100"]
 # releaseDate = result["releaseDate"]
 # primaryGenreName = result["primaryGenreName"]
 # description = result["description"]
-
-# resource = urllib.request.urlretrieve(artworkUrl100)
+artworkUrl.replace('100x100bb.jpg', '600x600bb.jpg')
+resource = urllib.request.urlretrieve(artworkUrl)
 for file in os.listdir(dir):
     filewithoutext = file.split('.')[0]
     print(file)
@@ -28,7 +34,6 @@ for file in os.listdir(dir):
         stream = (
             ffmpeg
             .input(dir+file)
-            # .input(resource[0])
             .output(
                 filewithoutext+"-%d.mp3", 
                 f='segment', 

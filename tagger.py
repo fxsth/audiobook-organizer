@@ -1,16 +1,22 @@
 import os
 from metadata import Audiobookmeta
-from mp3_tagger import MP3File, VERSION_2
+from PIL import Image
+import requests
+import eyed3
 
 def tagAllInDirectory(dir, audiobookmeta):
     for file in os.listdir(dir):
         print(audiobookmeta.searchterm)
-        mp3file = MP3File(dir+"/"+file)
-        mp3file.set_version(VERSION_2)
-        mp3file.song = file.split('.')[0]
-        mp3file.album = audiobookmeta.collectionName
-        mp3file.artist = audiobookmeta.artistName
-        mp3file.genre = audiobookmeta.primaryGenreName
-        mp3file.comment = audiobookmeta.description
-        # print(tags)
-        mp3file.save()
+        audiofile = eyed3.load(dir+"/"+file)
+        audiofile.tag.artist = audiobookmeta.artistName
+        audiofile.tag.album = audiobookmeta.collectionName
+        audiofile.tag.album_artist = audiobookmeta.artistName
+        audiofile.tag.title = file.split('.')[0]
+        # audiofile.tag.genre = audiobookmeta.primaryGenreName
+        # audiofile.tag.comment = audiobookmeta.description
+        # Cover:
+        response = requests.get(audiobookmeta.artworkUrl)
+        imagedata = response.content
+        audiofile.tag.images.set(3,imagedata,"image/jpeg",u"album cover")
+        audiofile.tag.save()
+

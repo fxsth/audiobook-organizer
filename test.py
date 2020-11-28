@@ -11,6 +11,6 @@ result = audiobookmeta.tryRetrieveFromITunes()
 # print(result)
 outputDir = dir+"/Tintenherz"
 splitter.create_dir(outputDir)
-# splitter.splitIfNecessary(dir, outputDir, "Tintenherz")
-# splitter.renameAllAfterSplitting(outputDir, "Tintenherz")
+splitter.splitIfNecessary(dir, outputDir, "Tintenherz")
+splitter.renameAllAfterSplitting(outputDir, "Tintenherz")
 tagger.tagAllInDirectory(outputDir, audiobookmeta)

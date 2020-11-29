@@ -36,7 +36,6 @@ def splitFile(pathTofile, outputDir, titlePrefix):
                 f='segment', 
                 segment_time='1800', 
                 acodec='copy'
-                # **{ 'metadata':'title='+collectionName, 'metadata:':'artist='+artistName, 'metadata:g':'album='+collectionName,}
                 )
         )
         ffmpeg.run(stream,capture_stderr=True, capture_stdout=True)

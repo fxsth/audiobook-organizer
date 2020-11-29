@@ -1,5 +1,5 @@
 # audiobook-organizer
-audiobook-organizer is a tool to split, rename and tag audiobooks. Tagging works unsupervised with the first result in iTunes search.
+audiobook-organizer is a tool to split, rename and tag audiobooks. Tagging works automatically with the first result in iTunes search.
 
 `audiobook-organizer.py "/path/to/audiobookfiles" "author - book title" "/path/to/outputdirectory"`
 

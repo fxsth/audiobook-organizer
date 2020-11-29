@@ -3,9 +3,10 @@ import ffmpeg
 
 def create_dir(path):
     try:
-        os.mkdir(path)
-    except OSError:
+        os.makedirs(path)
+    except OSError as e:
         print ("Creation of the directory %s failed" % path)
+        print(e.strerror())
         return False
     else:
         print ("Successfully created the directory %s " % path)

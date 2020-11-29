@@ -25,18 +25,20 @@ class Audiobookmeta:
             return False
         try:
             response = requests.get(api_url+self.searchterm).json()
-            print(api_url+self.searchterm)
+            # print(api_url+self.searchterm)
             if(len(response["results"])<1):
+                print ("No audiobook found")
                 return False
             result = response["results"][0]
-            print(result)
+            # print(result)
             self.collectionName = result["collectionName"]
             self.artistName = result["artistName"]
             self.artworkUrl = result["artworkUrl100"]
             self.releaseDate = result["releaseDate"]
             self.primaryGenreName = result["primaryGenreName"]
             self.description = result["description"]
-            self.artworkUrl.replace('100x100bb.jpg', '600x600bb.jpg')
+            self.artworkUrl = self.artworkUrl.replace('100x100bb.jpg', '600x600bb.jpg')
             return True
         except requests.exceptions.RequestException as e:  # This is the correct syntax
+            print ("An error occured while retrieving metadata")
             return False

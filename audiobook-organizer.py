@@ -13,7 +13,6 @@ if(len(sys.argv)<2):
 
     exit()
 dir = sys.argv[1]
-# dir = "/home/felix/Cornelia Funke/Cornelia Funke - Tintenherz"
 searchterm = ntpath.basename(dir)
 if(len(sys.argv)==3):
     searchterm = sys.argv[2]

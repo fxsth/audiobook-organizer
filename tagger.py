@@ -15,7 +15,7 @@ def tagAllInDirectory(dir, audiobookmeta):
         audiofile.tag.album_artist = audiobookmeta.artistName
         audiofile.tag.genre = audiobookmeta.primaryGenreName
         audiofile.tag.year = int(audiobookmeta.releaseDate[:4])
-        # audiofile.tag.comment = audiobookmeta.description
+        # audiofile.tag.comment = audiobookmeta.description didnt work for me?
         # Cover:
         response = requests.get(audiobookmeta.artworkUrl)
         imagedata = response.content

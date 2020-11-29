@@ -55,10 +55,10 @@ def renameAllAfterSplitting(dir, titlePrefix):
             fileCounter = fileCounter+1
             outputFileName = titlePrefix
             if(totalNumber>9 and fileCounter<10):
-                # add a zero if more than one digit
+                # 01,02,...,10
                 outputFileName = outputFileName + "0"
             if(totalNumber>99 and fileCounter<100):
-                # add a zero if more than two digits
+                # 001,002,...,010,...,100
                 outputFileName = outputFileName + "0"
             outputFileName = outputFileName + str(fileCounter) + ".mp3"
             os.rename(dir+"/"+file, dir+"/"+outputFileName)

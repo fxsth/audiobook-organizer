@@ -2,6 +2,7 @@ import sys
 import tagger
 import splitter
 import ntpath
+import os
 from metadata import Audiobookmeta
 
 print('Argument List:', str(sys.argv))
@@ -13,10 +14,16 @@ if(len(sys.argv)<2):
     print("For example: audiobook-organizer.py \"/path/to/audiobook files\" \"J.K. Rowling - Harry Potter und der Stein der Weisen\"")
 
     exit()
+
 dir = sys.argv[1]
+# default directory is home
+if( not os.path.exists(dir)):
+    home = os.path.expanduser("~")
+    dir = home + "/" + dir
 searchterm = ntpath.basename(dir)
 if(len(sys.argv)==3):
     searchterm = sys.argv[2]
+title = searchterm
 if("-" in searchterm):
     author = searchterm.split("-")[0]
     title = searchterm.split("-")[-1]

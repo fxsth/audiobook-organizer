@@ -4,6 +4,7 @@ import splitter
 import ntpath
 from metadata import Audiobookmeta
 
+print('Argument List:', str(sys.argv))
 if(len(sys.argv)<2):
     print("audiobook-organizer needs the directory of the audiobook as first argument")
     print("Optional second argument: \"Author - Title\"")
@@ -16,13 +17,16 @@ dir = sys.argv[1]
 searchterm = ntpath.basename(dir)
 if(len(sys.argv)==3):
     searchterm = sys.argv[2]
-author = searchterm.split("-")[0]
-title = searchterm.split("-")[-1]
-print("author: " + author, " title: " + title)
+if("-" in searchterm):
+    author = searchterm.split("-")[0]
+    title = searchterm.split("-")[-1]
+    print("author: " + author, " title: " + title)
+    outputDir = dir + "/" + author + "/" + title
+else:
+    outputDir = dir + "/" + searchterm
 # Load Metadata
 audiobookmeta = Audiobookmeta(searchterm)
 metadataFound = audiobookmeta.tryRetrieveFromITunes()
-outputDir = dir+"/"+author+"/"+title
 if(len(sys.argv)==4):
     outputDir = sys.argv[3]+"/"+author+"/"+title
 outputDir = outputDir.replace(" / ", "/")

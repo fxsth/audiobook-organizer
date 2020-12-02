@@ -2,6 +2,8 @@ import os
 import ffmpeg
 
 def create_dir(path):
+    if(os.path.exists(path)):
+        return False
     try:
         os.makedirs(path)
     except OSError as e:
@@ -28,21 +30,35 @@ def splitIfNecessary(dir, outputDir, titlePrefix):
 def splitFile(pathTofile, outputDir, titlePrefix):
     print(pathTofile)
     try:
-        stream = (
-            ffmpeg
-            .input(pathTofile)
-            .output(
-                outputDir+"/"+titlePrefix+"-%03d.mp3", 
-                f='segment', 
-                segment_time='1800', 
-                acodec='copy'
+        if(pathTofile.endswith('.mp3')):
+            stream = (
+                ffmpeg
+                .input(pathTofile)
+                .output(
+                    outputDir+"/"+titlePrefix+"-%03d.mp3",
+                    f='segment',
+                    segment_time='3600',
+                    acodec='copy'
+                    )
+            )
+        else:
+            stream = (
+                ffmpeg
+                    .input(pathTofile)
+                    .output(
+                    outputDir + "/" + titlePrefix + "-%03d.mp3",
+                    f='segment',
+                    segment_time='3600',
+                    acodec='libmp3lame'
                 )
-        )
+            )
         ffmpeg.run(stream,capture_stderr=True, capture_stdout=True)
     except ffmpeg.Error as e:
                 print('stdout:', e.stdout.decode('utf8'))
                 print('stderr:', e.stderr.decode('utf8'))
                 raise e
+
+
 
 def renameAllAfterSplitting(dir, titlePrefix):
     fileCounter = 0

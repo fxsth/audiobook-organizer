@@ -44,5 +44,6 @@ splitter.splitIfNecessary(dir, outputDir, title)
 # Rename Files
 splitter.renameAllAfterSplitting(outputDir, title)
 # Tag All Files With Loaded Metadata
-tagger.tagAllInDirectory(outputDir, audiobookmeta)
+if(metadataFound):
+    tagger.tagAllInDirectory(outputDir, audiobookmeta)
 print("End")

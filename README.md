@@ -7,3 +7,10 @@ Sets all files in input directory as input and create the new audiobook output f
 Input directory argument is mandatory, search term and output directory arguments are optional. If only the input directory is specified, it will search for the folder name as search term. Output directory would be the same as input directory.
 
 Manipulated tags are title, artist, album, albumartist, track number, genre, year, as well as the cover in 600x600px.
+
+## Requirements
+
+depends on packages:
+- ffmpeg-python
+- eyed3
+    

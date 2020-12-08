@@ -4,25 +4,31 @@ import splitter
 import ntpath
 import os
 from metadata import Audiobookmeta
+import argparse
 
-print('Argument List:', str(sys.argv))
-if(len(sys.argv)<2):
-    print("audiobook-organizer needs the directory of the audiobook as first argument")
-    print("Optional second argument: \"Author - Title\"")
-    print("Without second argument search term is set to folder name")
-    print("Optional third argument is Output directory such that OutputDirectory/author/audiobook")
-    print("For example: audiobook-organizer.py \"/path/to/audiobook files\" \"J.K. Rowling - Harry Potter und der Stein der Weisen\"")
+print("starting audiobook-organizer")
+parser = argparse.ArgumentParser(description='converts, splits, renames and tags audiobooks.')
+parser.add_argument("-i", "--inputdir", type=str, required=True, help='directory of audiobook input files')
+parser.add_argument("-t", "--searchterm", type=str, help='<author - title> for metatag search and ouput as author/title/file.mp3')
+parser.add_argument("-o", "--outputdir", type=str, help='directory of audiobook output files')
 
-    exit()
-
-dir = sys.argv[1]
+# parser.add_argument("-i", "--inputdir",dest="inputdir", type=str, nargs='2',
+#                     help='directory of audiobook input files', metavar=("ref","rmsd"))
+# parser.add_argument('-t','--searchterm', type=str,
+#                     help='author - book title')
+# parser.add_argument('-o','--outputdir', type=str, nargs='2',
+#                     help='directory of audiobook output files')
+args = parser.parse_args()
+print(args)
+dir = args.inputdir
 # default directory is home
 if( not os.path.exists(dir)):
     home = os.path.expanduser("~")
     dir = home + "/" + dir
 searchterm = ntpath.basename(dir)
-if(len(sys.argv)==3):
-    searchterm = sys.argv[2]
+if(args.searchterm is not None):
+    searchterm = args.searchterm
+
 title = searchterm
 if("-" in searchterm):
     author = searchterm.split("-")[0]
@@ -34,8 +40,8 @@ else:
 # Load Metadata
 audiobookmeta = Audiobookmeta(searchterm)
 metadataFound = audiobookmeta.tryRetrieveFromITunes()
-if(len(sys.argv)==4):
-    outputDir = sys.argv[3]+"/"+author+"/"+title
+if(args.outputdir is not None):
+    outputDir = args.outputdir+"/"+author+"/"+title
 outputDir = outputDir.replace(" / ", "/")
 # Create Output Directory
 splitter.create_dir(outputDir)

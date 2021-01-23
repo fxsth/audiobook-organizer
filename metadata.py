@@ -42,6 +42,6 @@ class Audiobookmeta:
             self.artworkUrl = self.artworkUrl.replace('100x100bb.jpg', '600x600bb.jpg')
             print("audiobook found: "+self.artistName+" - "+self.collectionName)
             return True
-        except requests.exceptions.RequestException as e:  # This is the correct syntax
+        except requests.exceptions.RequestException as e:
             print ("An error occured while retrieving metadata")
             return False

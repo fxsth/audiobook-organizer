@@ -13,12 +13,6 @@ parser.add_argument("-t", "--searchterm", type=str, help='<author - title> for m
 parser.add_argument("-o", "--outputdir", type=str, help='directory of audiobook output files')
 parser.add_argument("-r", "--recursive", dest='recursive', default=False, action='store_true', help='searches for files in inputdir recursively')
 
-# parser.add_argument("-i", "--inputdir",dest="inputdir", type=str, nargs='2',
-#                     help='directory of audiobook input files', metavar=("ref","rmsd"))
-# parser.add_argument('-t','--searchterm', type=str,
-#                     help='author - book title')
-# parser.add_argument('-o','--outputdir', type=str, nargs='2',
-#                     help='directory of audiobook output files')
 args = parser.parse_args()
 print(args)
 dir = args.inputdir

@@ -47,12 +47,11 @@ if(args.outputdir is not None):
 outputDir = outputDir.replace(" / ", "/")
 # Create Output Directory
 splitter.create_dir(outputDir)
-# Split Files In Segments If Necessary
+# Split Files In Segments If Necessary and put them in output dir
 splitter.splitIfNecessary(dir, outputDir, title, recursive)
 # Rename Files
 splitter.renameAllAfterSplitting(outputDir, title)
 # Tag All Files With Loaded Metadata
-
 tagger.tagAllInDirectory(outputDir, audiobookmeta)
 
 print("End")

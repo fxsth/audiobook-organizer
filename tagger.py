@@ -9,7 +9,7 @@ def tagAllInDirectory(dir, audiobookmeta):
         numbers = re.findall(r'\d+', file)
         audiofile = eyed3.load(dir+"/"+file)
         audiofile.tag.title = file.split('.')[0]
-        audiofile.tag.track = int(numbers[0])
+        audiofile.tag.track_num = int(numbers[0])
         audiofile.tag.artist = audiobookmeta.artistName
         audiofile.tag.album = audiobookmeta.collectionName
         audiofile.tag.album_artist = audiobookmeta.artistName

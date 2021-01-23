@@ -1,5 +1,7 @@
 import os
 import sys
+from shutil import copyfile
+
 
 import ffmpeg
 
@@ -26,25 +28,34 @@ def splitIfNecessary(dir, outputDir, titlePrefix, recursive = False):
         return
     for element in os.listdir(dir):
         if os.path.isfile(dir+"/"+element):
+            zeros = ""
             fileCounter = fileCounter+1
             if(totalNumber>9 and fileCounter<10):
                 # add a zero if more than one digit
-                titlePrefix = titlePrefix + "0"
-            splitFile(dir+"/"+element, outputDir, titlePrefix + str(fileCounter))
+                zeros = zeros + "0"
+            if (os.path.getsize(dir + "/" + element) < 100000000 and element.endswith('.mp3')):
+                copyfile(dir + "/" + element, outputDir + "/" + titlePrefix + zeros + str(fileCounter) + ".mp3")
+                print("Copy to: " + outputDir + "/" + titlePrefix + zeros + str(fileCounter) + ".mp3")
+            else:
+                splitFile(dir+"/"+element, outputDir, titlePrefix + str(fileCounter))
 
 def splitIfNecessaryRecursive(dir, outputDir, titlePrefix, totalNumber ,fileCounter = 0):
     for element in os.listdir(dir):
         if os.path.isfile(dir+"/"+element):
-            trackNumber = ""
+            zeros = ""
             fileCounter = fileCounter+1
             if(totalNumber>9 and fileCounter<10):
                 # add a zero if more than one digit
-                trackNumber = trackNumber + "0"
+                zeros = zeros + "0"
             if (totalNumber > 99 and fileCounter < 100):
-                trackNumber = trackNumber + "0"
+                zeros = zeros + "0"
             if (totalNumber > 999 and fileCounter < 1000):
-                trackNumber = trackNumber + "0"
-            splitFile(dir+"/"+element, outputDir, titlePrefix + trackNumber+ str(fileCounter))
+                zeros = zeros + "0"
+            if(os.path.getsize(dir + "/" + element)<100000000 and element.endswith('.mp3')):
+                copyfile(dir + "/" + element, outputDir + "/" + titlePrefix + zeros + str(fileCounter) + ".mp3")
+                print("Copy to: " + outputDir + "/" + titlePrefix + zeros + str(fileCounter) + ".mp3")
+            else:
+                splitFile(dir+"/"+element, outputDir, titlePrefix + zeros+ str(fileCounter))
         else:
             fileCounter = splitIfNecessaryRecursive(dir+"/"+element, outputDir, titlePrefix, totalNumber, fileCounter)
     return fileCounter

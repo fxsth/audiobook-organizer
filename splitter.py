@@ -62,44 +62,42 @@ def splitFile(pathTofile, outputDir, titlePrefix):
 
 
 
-def renameAllAfterSplitting(dir, titlePrefix):
+def renameAllAfterSplitting(dir, title):
     fileCounter = 0
     totalNumber = len([name for name in os.listdir(dir) if os.path.isfile(dir+"/"+name)])
-    titlePrefix = titlePrefix + "-"
     sortedDir = sorted(os.listdir(dir))
     for file in sortedDir:
+        trackNumber = ""
         if os.path.isfile(dir+"/"+file):   
             fileCounter = fileCounter+1
-            outputFileName = titlePrefix
             if(totalNumber>9 and fileCounter<10):
                 # 01,02,...,10
-                outputFileName = outputFileName + "0"
+                trackNumber = trackNumber + "0"
             if(totalNumber>99 and fileCounter<100):
                 # 001,002,...,010,...,100
-                outputFileName = outputFileName + "0"
-            outputFileName = outputFileName + str(fileCounter) + ".mp3"
+                trackNumber = trackNumber + "0"
+            outputFileName = trackNumber + str(fileCounter) + " - " + title + ".mp3"
             os.rename(dir+"/"+file, dir+"/"+outputFileName)
 
-def getAllFilesInSubdirectoriesAndRename(parentdir, titlePrefix):
+def getAllFilesInSubdirectoriesAndRename(parentdir, title):
     sortedParentDir = sorted(os.listdir(parentdir))
     fileCounter = 0
     totalNumber = 0
     for subdir in sortedParentDir:
         totalNumber = totalNumber + len([name for name in os.listdir(parentdir+"/"+subdir) if os.path.isfile(subdir + "/" + name)])
     for subdir in sortedParentDir:
-        titlePrefix = titlePrefix + "-"
+        trackNumber = ""
         sortedDir = sorted(os.listdir(parentdir+"/"+subdir))
         for file in sortedDir:
             if os.path.isfile(subdir + "/" + file):
                 fileCounter = fileCounter + 1
-                outputFileName = titlePrefix
                 if (totalNumber > 9 and fileCounter < 10):
                     # 01,02,...,10
-                    outputFileName = outputFileName + "0"
+                    trackNumber = trackNumber + "0"
                 if (totalNumber > 99 and fileCounter < 100):
                     # 001,002,...,010,...,100
-                    outputFileName = outputFileName + "0"
-                outputFileName = outputFileName + str(fileCounter) + ".mp3"
+                    trackNumber = trackNumber + "0"
+                outputFileName = trackNumber + str(fileCounter) + " - " + title + ".mp3"
                 os.rename(subdir + "/" + file, parentdir + "/" + outputFileName)
 
 # dir= r"C:\Users\Felix\Downloads\2014-Das_Licht_der_Welt_Die_Fleury-ddlme-zz147329\Daniel Wolf - Das Licht der Welt\Daniel Wolf\Das Licht der Welt"

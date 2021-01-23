@@ -14,12 +14,14 @@ class Audiobookmeta:
     
     def __init__(self, search):
         self.searchterm = search
-
-    def tryRetrieveFromITunes(self):
+        self.artistName = self.searchterm.split("-")[0]
+        self.collectionName = self.searchterm.split("-")[-1]
         self.searchterm.replace('-', '')
         self.searchterm.replace(':', '')
         self.searchterm.replace('  ', ' ')
         self.searchterm.replace(' ', '%20')
+
+    def tryRetrieveFromITunes(self):
         if(len(self.searchterm)==0):
             print ("Searchterm is empty")
             return False

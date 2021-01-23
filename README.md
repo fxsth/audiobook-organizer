@@ -1,5 +1,6 @@
 # audiobook-organizer
-audiobook-organizer is a tool to split, rename and tag audiobooks. Splits into 60min mp3 files, if larger. Tagging works automatically with the first result in iTunes search.
+audiobook-organizer is a tool to split, rename and tag audiobooks. Splits into 60min mp3 files, if larger than 100mb. Tagging works automatically with the first result in iTunes search.
+The tool supports the recommended naming standard of Plex.
 
 `audiobook-organizer.py "/path/to/audiobookfiles" "author - book title" "/path/to/outputdirectory"`
 ```

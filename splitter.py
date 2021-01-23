@@ -16,17 +16,38 @@ def create_dir(path):
         print ("Successfully created the directory %s " % path)
         return True
 
-def splitIfNecessary(dir, outputDir, titlePrefix):
+def splitIfNecessary(dir, outputDir, titlePrefix, recursive = False):
     fileCounter = 0
     totalNumber = len([name for name in os.listdir(dir) if os.path.isfile(dir+"/"+name)])
     titlePrefix = titlePrefix + "-"
-    for file in os.listdir(dir):
-        if os.path.isfile(dir+"/"+file):   
+    if(recursive):
+        totalNumber = sum([len(files) for r, d, files in os.walk(dir)])
+        splitIfNecessaryRecursive(dir, outputDir, titlePrefix, totalNumber)
+        return
+    for element in os.listdir(dir):
+        if os.path.isfile(dir+"/"+element):
             fileCounter = fileCounter+1
             if(totalNumber>9 and fileCounter<10):
                 # add a zero if more than one digit
                 titlePrefix = titlePrefix + "0"
-            splitFile(dir+"/"+file, outputDir, titlePrefix + str(fileCounter))
+            splitFile(dir+"/"+element, outputDir, titlePrefix + str(fileCounter))
+
+def splitIfNecessaryRecursive(dir, outputDir, titlePrefix, totalNumber ,fileCounter = 0):
+    for element in os.listdir(dir):
+        if os.path.isfile(dir+"/"+element):
+            trackNumber = ""
+            fileCounter = fileCounter+1
+            if(totalNumber>9 and fileCounter<10):
+                # add a zero if more than one digit
+                trackNumber = trackNumber + "0"
+            if (totalNumber > 99 and fileCounter < 100):
+                trackNumber = trackNumber + "0"
+            if (totalNumber > 999 and fileCounter < 1000):
+                trackNumber = trackNumber + "0"
+            splitFile(dir+"/"+element, outputDir, titlePrefix + trackNumber+ str(fileCounter))
+        else:
+            fileCounter = splitIfNecessaryRecursive(dir+"/"+element, outputDir, titlePrefix, totalNumber, fileCounter)
+    return fileCounter
 
 
 def splitFile(pathTofile, outputDir, titlePrefix):

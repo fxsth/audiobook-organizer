@@ -11,6 +11,7 @@ parser = argparse.ArgumentParser(description='converts, splits, renames and tags
 parser.add_argument("-i", "--inputdir", type=str, required=True, help='directory of audiobook input files')
 parser.add_argument("-t", "--searchterm", type=str, help='<author - title> for metatag search and ouput as author/title/file.mp3')
 parser.add_argument("-o", "--outputdir", type=str, help='directory of audiobook output files')
+parser.add_argument("-r", "--recursive", dest='recursive', default=False, action='store_true', help='searches for files in inputdir recursively')
 
 # parser.add_argument("-i", "--inputdir",dest="inputdir", type=str, nargs='2',
 #                     help='directory of audiobook input files', metavar=("ref","rmsd"))
@@ -21,6 +22,7 @@ parser.add_argument("-o", "--outputdir", type=str, help='directory of audiobook 
 args = parser.parse_args()
 print(args)
 dir = args.inputdir
+recursive = args.recursive
 # default directory is home
 if( not os.path.exists(dir)):
     home = os.path.expanduser("~")
@@ -46,7 +48,7 @@ outputDir = outputDir.replace(" / ", "/")
 # Create Output Directory
 splitter.create_dir(outputDir)
 # Split Files In Segments If Necessary
-splitter.splitIfNecessary(dir, outputDir, title)
+splitter.splitIfNecessary(dir, outputDir, title, recursive)
 # Rename Files
 splitter.renameAllAfterSplitting(outputDir, title)
 # Tag All Files With Loaded Metadata

@@ -1,4 +1,5 @@
 import os
+import re
 import sys
 from shutil import copyfile
 
@@ -26,7 +27,8 @@ def splitIfNecessary(dir, outputDir, titlePrefix, recursive = False):
         totalNumber = sum([len(files) for r, d, files in os.walk(dir)])
         splitIfNecessaryRecursive(dir, outputDir, titlePrefix, totalNumber)
         return
-    for element in os.listdir(dir):
+    filelist = sorted(os.listdir(dir), key=lambda x: int(re.findall(r'\d+', x)[0]) if x.isdigit() else x)
+    for element in filelist:
         if os.path.isfile(dir+"/"+element):
             zeros = ""
             fileCounter = fileCounter+1
@@ -40,7 +42,8 @@ def splitIfNecessary(dir, outputDir, titlePrefix, recursive = False):
                 splitFile(dir+"/"+element, outputDir, titlePrefix + str(fileCounter))
 
 def splitIfNecessaryRecursive(dir, outputDir, titlePrefix, totalNumber ,fileCounter = 0):
-    for element in os.listdir(dir):
+    filelist = sorted(os.listdir(dir), key=lambda x: int(re.findall(r'\d+', x)[0]) if x.isdigit() else x)
+    for element in filelist:
         if os.path.isfile(dir+"/"+element):
             zeros = ""
             fileCounter = fileCounter+1

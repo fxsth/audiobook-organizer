@@ -20,6 +20,9 @@ def create_dir(path):
         return True
 
 def splitIfNecessary(dir, outputDir, titlePrefix, recursive = False):
+    if(os.path.isfile(dir)):
+        splitFile(dir, outputDir, titlePrefix)
+        return
     fileCounter = 0
     totalNumber = len([name for name in os.listdir(dir) if os.path.isfile(dir+"/"+name)])
     titlePrefix = titlePrefix + "-"

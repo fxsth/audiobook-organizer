@@ -22,6 +22,10 @@ if( not os.path.exists(dir)):
     home = os.path.expanduser("~")
     dir = home + "/" + dir
 searchterm = ntpath.basename(dir)
+# special case: inputdir is only file
+if(os.path.isfile(args.inputdir)):
+    dir = args.inputdir
+    searchterm = ntpath.basename(dir).split('.')[0]
 if(args.searchterm is not None):
     searchterm = args.searchterm
 

@@ -2,9 +2,9 @@ import os
 import re
 import sys
 from shutil import copyfile
-
-
 import ffmpeg
+from natsort import natsorted
+
 
 def create_dir(path):
     if(os.path.exists(path)):
@@ -30,7 +30,7 @@ def splitIfNecessary(dir, outputDir, titlePrefix, recursive = False):
         totalNumber = sum([len(files) for r, d, files in os.walk(dir)])
         splitIfNecessaryRecursive(dir, outputDir, titlePrefix, totalNumber)
         return
-    filelist = sorted(os.listdir(dir), key=lambda x: int(re.findall(r'\d+', x)[0]) if x.isdigit() else x)
+    filelist = natsorted(os.listdir(dir))
     for element in filelist:
         if os.path.isfile(dir+"/"+element):
             zeros = ""
@@ -45,7 +45,7 @@ def splitIfNecessary(dir, outputDir, titlePrefix, recursive = False):
                 splitFile(dir+"/"+element, outputDir, titlePrefix + str(fileCounter))
 
 def splitIfNecessaryRecursive(dir, outputDir, titlePrefix, totalNumber ,fileCounter = 0):
-    filelist = sorted(os.listdir(dir), key=lambda x: int(re.findall(r'\d+', x)[0]) if x.isdigit() else x)
+    filelist = natsorted(os.listdir(dir))
     for element in filelist:
         if os.path.isfile(dir+"/"+element):
             zeros = ""
@@ -103,7 +103,8 @@ def splitFile(pathTofile, outputDir, titlePrefix):
 def renameAllAfterSplitting(dir, title):
     fileCounter = 0
     totalNumber = len([name for name in os.listdir(dir) if os.path.isfile(dir+"/"+name)])
-    sortedDir = sorted(os.listdir(dir))
+    test = os.listdir(dir)
+    sortedDir = natsorted(os.listdir(dir))
     for file in sortedDir:
         trackNumber = ""
         if os.path.isfile(dir+"/"+file):   
@@ -118,14 +119,14 @@ def renameAllAfterSplitting(dir, title):
             os.rename(dir+"/"+file, dir+"/"+outputFileName)
 
 def getAllFilesInSubdirectoriesAndRename(parentdir, title):
-    sortedParentDir = sorted(os.listdir(parentdir))
+    sortedParentDir = natsorted(os.listdir(parentdir))
     fileCounter = 0
     totalNumber = 0
     for subdir in sortedParentDir:
         totalNumber = totalNumber + len([name for name in os.listdir(parentdir+"/"+subdir) if os.path.isfile(subdir + "/" + name)])
     for subdir in sortedParentDir:
         trackNumber = ""
-        sortedDir = sorted(os.listdir(parentdir+"/"+subdir))
+        sortedDir = natsorted(os.listdir(parentdir+"/"+subdir))
         for file in sortedDir:
             if os.path.isfile(subdir + "/" + file):
                 fileCounter = fileCounter + 1

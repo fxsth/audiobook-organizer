@@ -30,4 +30,4 @@ Manipulated tags are title, artist, album, albumartist, track number, genre, yea
 depends on packages:
 - ffmpeg-python
 - eyed3
-    
+- natsort

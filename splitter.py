@@ -38,6 +38,8 @@ def splitIfNecessary(dir, outputDir, titlePrefix, recursive = False):
             if(totalNumber>9 and fileCounter<10):
                 # add a zero if more than one digit
                 zeros = zeros + "0"
+            if (totalNumber > 99 and fileCounter < 100):
+                zeros = zeros + "0"
             if (os.path.getsize(dir + "/" + element) < 100000000 and element.endswith('.mp3')):
                 copyfile(dir + "/" + element, outputDir + "/" + titlePrefix + zeros + str(fileCounter) + ".mp3")
                 print("Copy to: " + outputDir + "/" + titlePrefix + zeros + str(fileCounter) + ".mp3")
@@ -71,6 +73,7 @@ def splitFile(pathTofile, outputDir, titlePrefix):
     print(pathTofile)
     try:
         if(pathTofile.endswith('.mp3')):
+            print("Processing File by copy codec")
             stream = (
                 ffmpeg
                 .input(pathTofile)
@@ -81,14 +84,18 @@ def splitFile(pathTofile, outputDir, titlePrefix):
                     acodec='copy'
                     )
             )
+        elif(pathTofile.endswith('.ini')):
+            print("ignoring .ini file")
+            return
         else:
+            print("Processing File by transcode to mp3")
             stream = (
                 ffmpeg
                     .input(pathTofile)
                     .output(
                     outputDir + "/" + titlePrefix + "-%03d.mp3",
                     f='segment',
-                    segment_time='3600',
+                    segment_time='7200',
                     acodec='libmp3lame'
                 )
             )
@@ -116,6 +123,7 @@ def renameAllAfterSplitting(dir, title):
                 # 001,002,...,010,...,100
                 trackNumber = trackNumber + "0"
             outputFileName = trackNumber + str(fileCounter) + " - " + title + ".mp3"
+            print("Renaming " + file + " -> " + outputFileName)
             os.rename(dir+"/"+file, dir+"/"+outputFileName)
 
 def getAllFilesInSubdirectoriesAndRename(parentdir, title):
@@ -137,6 +145,7 @@ def getAllFilesInSubdirectoriesAndRename(parentdir, title):
                     # 001,002,...,010,...,100
                     trackNumber = trackNumber + "0"
                 outputFileName = trackNumber + str(fileCounter) + " - " + title + ".mp3"
+                print("Renaming " + file + " -> " + outputFileName)
                 os.rename(subdir + "/" + file, parentdir + "/" + outputFileName)
 
 # dir= r"C:\Users\Felix\Downloads\2014-Das_Licht_der_Welt_Die_Fleury-ddlme-zz147329\Daniel Wolf - Das Licht der Welt\Daniel Wolf\Das Licht der Welt"

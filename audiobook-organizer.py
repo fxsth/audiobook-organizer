@@ -19,7 +19,8 @@ parser = argparse.ArgumentParser(description='converts, splits, renames and tags
 parser.add_argument("-i", "--inputdir", type=str, required=True, help='directory of audiobook input files')
 parser.add_argument("-t", "--searchterm", type=str, help='<author - title> for metatag search and ouput as author/title/file.mp3')
 parser.add_argument("-o", "--outputdir", type=str, help='directory of audiobook output files')
-parser.add_argument("-s", "--split", type=bool, default=True, help='splits into 60min files if larger than 100Mb')
+parser.add_argument("-n", "--no-split", dest='split', action='store_false', help='does NOT split files')
+parser.set_defaults(split=True)
 parser.add_argument("-r", "--recursive", dest='recursive', default=False, action='store_true', help='searches for files in inputdir recursively')
 
 args = parser.parse_args()

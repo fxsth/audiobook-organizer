@@ -81,7 +81,7 @@ def splitFile(pathTofile, outputDir, titlePrefix):
                 ffmpeg
                 .input(pathTofile)
                 .output(
-                    outputDir+"/"+titlePrefix+".mp3",
+                    outputDir+"/"+titlePrefix+"-%03d.mp3",
                     f='segment',
                     segment_time='3600',
                     acodec='copy'
@@ -117,7 +117,7 @@ def convertAndMove(pathTofile, outputDir, titlePrefix):
                 ffmpeg
                 .input(pathTofile)
                 .output(
-                    outputDir+"/"+titlePrefix+"-%03d.mp3",
+                    outputDir+"/"+titlePrefix+".mp3",
                     acodec='copy'
                     )
             )
@@ -130,7 +130,7 @@ def convertAndMove(pathTofile, outputDir, titlePrefix):
                 ffmpeg
                     .input(pathTofile)
                     .output(
-                    outputDir + "/" + titlePrefix + "-%03d.mp3",
+                    outputDir + "/" + titlePrefix + ".mp3",
                     acodec='libmp3lame'
                 )
             )

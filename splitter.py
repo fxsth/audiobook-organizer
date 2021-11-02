@@ -19,7 +19,7 @@ def create_dir(path):
         print ("Successfully created the directory %s " % path)
         return True
 
-def splitIfNecessary(dir, outputDir, titlePrefix, recursive = False):
+def splitIfNecessary(dir, outputDir, titlePrefix, split = True, recursive = False):
     if(os.path.isfile(dir)):
         splitFile(dir, outputDir, titlePrefix)
         return
@@ -44,7 +44,10 @@ def splitIfNecessary(dir, outputDir, titlePrefix, recursive = False):
                 copyfile(dir + "/" + element, outputDir + "/" + titlePrefix + zeros + str(fileCounter) + ".mp3")
                 print("Copy to: " + outputDir + "/" + titlePrefix + zeros + str(fileCounter) + ".mp3")
             else:
-                splitFile(dir+"/"+element, outputDir, titlePrefix + str(fileCounter))
+                if (split):
+                    splitFile(dir+"/"+element, outputDir, titlePrefix + str(fileCounter))
+                else:
+                    convertAndMove(dir+"/"+element, outputDir, titlePrefix + str(fileCounter))
 
 def splitIfNecessaryRecursive(dir, outputDir, titlePrefix, totalNumber ,fileCounter = 0):
     filelist = natsorted(os.listdir(dir))
@@ -78,7 +81,7 @@ def splitFile(pathTofile, outputDir, titlePrefix):
                 ffmpeg
                 .input(pathTofile)
                 .output(
-                    outputDir+"/"+titlePrefix+"-%03d.mp3",
+                    outputDir+"/"+titlePrefix+".mp3",
                     f='segment',
                     segment_time='3600',
                     acodec='copy'
@@ -95,7 +98,39 @@ def splitFile(pathTofile, outputDir, titlePrefix):
                     .output(
                     outputDir + "/" + titlePrefix + "-%03d.mp3",
                     f='segment',
-                    segment_time='7200',
+                    segment_time='3600',
+                    acodec='libmp3lame'
+                )
+            )
+        ffmpeg.run(stream,capture_stderr=True, capture_stdout=True)
+    except ffmpeg.Error as e:
+                print('stdout:', e.stdout.decode('utf8'))
+                print('stderr:', e.stderr.decode('utf8'))
+                raise e
+
+def convertAndMove(pathTofile, outputDir, titlePrefix):
+    print(pathTofile)
+    try:
+        if(pathTofile.endswith('.mp3')):
+            print("Processing File by copy codec")
+            stream = (
+                ffmpeg
+                .input(pathTofile)
+                .output(
+                    outputDir+"/"+titlePrefix+"-%03d.mp3",
+                    acodec='copy'
+                    )
+            )
+        elif(pathTofile.endswith('.ini')):
+            print("ignoring .ini file")
+            return
+        else:
+            print("Processing File by transcode to mp3")
+            stream = (
+                ffmpeg
+                    .input(pathTofile)
+                    .output(
+                    outputDir + "/" + titlePrefix + "-%03d.mp3",
                     acodec='libmp3lame'
                 )
             )
@@ -107,10 +142,9 @@ def splitFile(pathTofile, outputDir, titlePrefix):
 
 
 
-def renameAllAfterSplitting(dir, title):
+def renameAllFilesInDirectory(dir, title):
     fileCounter = 0
     totalNumber = len([name for name in os.listdir(dir) if os.path.isfile(dir+"/"+name)])
-    test = os.listdir(dir)
     sortedDir = natsorted(os.listdir(dir))
     for file in sortedDir:
         trackNumber = ""

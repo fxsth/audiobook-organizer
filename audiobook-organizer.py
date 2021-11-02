@@ -6,17 +6,29 @@ import os
 from metadata import Audiobookmeta
 import argparse
 
+def fixInputDirectory(inputDirectory):
+    inputDirectory = inputDirectory.strip()
+    if (inputDirectory.startswith('.\\')):
+        inputDirectory = inputDirectory[2:]
+    if (inputDirectory.endswith('\\')):
+        inputDirectory = inputDirectory[:-2]
+    return inputDirectory
+
 print("starting audiobook-organizer")
 parser = argparse.ArgumentParser(description='converts, splits, renames and tags audiobooks.')
 parser.add_argument("-i", "--inputdir", type=str, required=True, help='directory of audiobook input files')
 parser.add_argument("-t", "--searchterm", type=str, help='<author - title> for metatag search and ouput as author/title/file.mp3')
 parser.add_argument("-o", "--outputdir", type=str, help='directory of audiobook output files')
+parser.add_argument("-s", "--split", type=bool, default=True, help='splits into 60min files if larger than 100Mb')
 parser.add_argument("-r", "--recursive", dest='recursive', default=False, action='store_true', help='searches for files in inputdir recursively')
 
 args = parser.parse_args()
 print(args)
-dir = args.inputdir
+
+
+dir = fixInputDirectory(args.inputdir)
 recursive = args.recursive
+split = args.split
 # default directory is home
 if( not os.path.exists(dir)):
     home = os.path.expanduser("~")
@@ -46,9 +58,9 @@ outputDir = outputDir.replace(" / ", "/")
 # Create Output Directory
 splitter.create_dir(outputDir)
 # Split Files In Segments If Necessary and put them in output dir
-splitter.splitIfNecessary(dir, outputDir, title, recursive)
+splitter.splitIfNecessary(dir, outputDir, title, split, recursive)
 # Rename Files
-splitter.renameAllAfterSplitting(outputDir, title)
+splitter.renameAllFilesInDirectory(outputDir, title)
 # Tag All Files With Loaded Metadata
 tagger.tagAllInDirectory(outputDir, audiobookmeta)
 

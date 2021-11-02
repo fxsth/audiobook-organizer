@@ -5,7 +5,7 @@ The tool supports the recommended naming standard of Plex.
 `audiobook-organizer.py -i "/path/to/audiobookfiles" -t "author - book title" -o "/path/to/outputdirectory"`
 ```
 usage: audiobook-organizer.py [-h] -i INPUTDIR [-t SEARCHTERM] [-o OUTPUTDIR]
-                              [-r]
+                              [-n] [-r]
 
 converts, splits, renames and tags audiobooks.
 
@@ -18,6 +18,7 @@ optional arguments:
                         author/title/file.mp3
   -o OUTPUTDIR, --outputdir OUTPUTDIR
                         directory of audiobook output files
+  -n, --no-split        does NOT split files
   -r, --recursive       searches for files in inputdir recursively
 ```
 Sets all files in input directory as input and create the new audiobook output files in a folder outputdirectory/author/audiobook.
